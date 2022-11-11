@@ -21,8 +21,7 @@ const startServer = async () => {
     });
 
     httpServer.listen({ port: process.env.PORT || 2900 }, () => console.log(`serve listening on localhost:4000${apolloServer.graphqlPath}`));
-
-//
-startServer();
     
 }
+//
+startServer();

@@ -50,8 +50,9 @@ model User {
   lastName  String?
   // orders Order[] @relation("orders")
   password String
-  phone   String
+  phone   String?
   street  String
+  type  String
   updatedAt DateTime? @updatedAt
   username String   @unique
   zip String

@@ -1,8 +1,7 @@
 /*
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from '@apollo/server/standalone';
-import typeDefs from "./graphql/typeDefs";
-import resolvers from "./graphql/resolvers";
+import { resolvers, typeDefs } from "./graphql/schema";
 */
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from '@apollo/server/standalone';
@@ -42,10 +41,13 @@ type Query {
 
 const resolvers = {
     Query: {
-      getAllUsers: async () => await prisma.user.findMany()
+      getAllUsers: async (parent, args, context, info) => { 
+        return await prisma.user.findMany();
+      },
     }
 };
 
 const server = new ApolloServer({ resolvers, typeDefs });
-const {url} = await startStandaloneServer(server, { listen: { port: 4000 } });
+const port = process?.env?.PORT ?? 4000;
+const {url} = async () => await startStandaloneServer(server, { context: () => console.log(`server listening on port ${port}`), listen: { port } });
 console.log(`**server url => ${url}`);

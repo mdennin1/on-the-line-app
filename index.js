@@ -1,27 +1,26 @@
-import { createServer } from "http";
-import express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
-import { typeDefs } from "./graphql/typeDefs";
-import { resolvers } from "./graphql/resolvers";
+// import { PrismaClient } from "@prisma/client";
+import { ApolloServer, gql } from "@apollo/server";
+import { startStandaloneServer } from '@apollo/server/standalone';
 
-const startServer = async () => {
-    const app = express();
-    const httpServer = createServer(app);
+// const prisma = new PrismaClient();
 
+const typeDefs = gql`
+  type User {
+    email: String!
+    name: String
+  }
 
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers,
-    });
+  type Query {
+    allUsers: [User!]!
+  }
+`;
 
-    await apolloServer.start();
-    apolloServer.applyMiddleware({
-        app, 
-        path: '/api'
-    });
+const resolvers = {
+  Query: {
+    allUsers: () => console.log('users returned')
+  }
+};
 
-    httpServer.listen({ port: process.env.PORT || 2900 }, () => console.log(`serve listening on localhost:4000${apolloServer.graphqlPath}`));
-    
-}
-//
-startServer();
+const server = new ApolloServer({ resolvers, typeDefs });
+// server.listen({ port: 4000 });
+const {url} = await startStandaloneServer(server);

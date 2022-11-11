@@ -1,8 +1,24 @@
-import { gql } from "apollo-server-express";
+// import { gql } from "apollo-server-express";
+import { gql } from "@apollo/server";
 
 const typeDefs = gql`
+type User{
+    id: ID!
+    username: String!
+    email: String!
+    firstName: String
+}
+
 type Query {
-    hello: String
+    getAllUsers: {
+        User{
+            id
+            __typeName
+            username
+            email
+            firstName
+        }
+    }
 }
 `;
 

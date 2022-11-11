@@ -4,5 +4,5 @@ import schema from "./graphql/schema.js"; //import { resolvers, typeDefs } from 
 
 const server = new ApolloServer(schema);
 const port = process?.env?.PORT ?? 4000;
-const {url} = async () => await startStandaloneServer(server, { context: () => console.log(`server listening on port ${port}`), listen: { port } });
+const {url} = await startStandaloneServer(server, { context: () => console.log(`server listening on port ${port}`), listen: { port } });
 console.log(`**server url => ${url}`);

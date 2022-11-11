@@ -1,5 +1,4 @@
-// import { gql } from "apollo-server-express";
-import { gql } from "@apollo/server";
+import { gql } from "apollo-server"; 
 
 const typeDefs = gql`
 type User{
@@ -7,6 +6,10 @@ type User{
     username: String!
     email: String!
     firstName: String
+    lastName: String
+    city: String
+    street: String
+    zip: String
 }
 
 type Query {
@@ -17,6 +20,10 @@ type Query {
             username
             email
             firstName
+            lastName
+            city
+            street
+            zip
         }
     }
 }

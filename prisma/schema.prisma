@@ -17,6 +17,13 @@ enum AddressType {
   PRIMARY_ADDRESS_TYPE
 }
 
+enum FishType {
+  BASS
+  FRESH_WATER
+  SALT_WATER
+  TROUT
+}
+
 enum ProductCategory {
   FISH
   MEAL
@@ -190,7 +197,8 @@ model Product {
   ownerId     String
   ownerName   String
   sku         String
-  unit        Unit
+  type        FishType?
+  unit        Unit            @default(OZ)
   weight      Float
   CartItem    CartItem[]
   OrderItem   OrderItem[]

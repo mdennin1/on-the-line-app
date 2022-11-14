@@ -3,13 +3,16 @@ import { gql } from "apollo-server-express"; //"apollo-server";
 
 const prisma = new PrismaClient()
 export const resolvers = {
+  Mutation: {
+    createNewProduct: async (parent, {data}, context) => await prisma.product.create({data})
+  },
   Query: {
     getAllPartners: async (parent, args, context, info) => await prisma.partner.findMany(),
     getAllProducts: async (parent, args, context, info) => await prisma.product.findMany(),
     getAllUsers: async (parent, args, context, info) => await prisma.user.findMany(),
-    getUserById: async (parent, args, context, info) => await prisma.user.findUnique({where:{id: args.userId}}),
-    getProductsByOwnerId: async (parent, args, context, info) => await prisma.product.findUnique({where: {ownerId: args.ownerId}}),
-    getProductsByOwner: async (parent, args, context, info) => await prisma.product.findUnique({where: {ownerName: args.name}})
+    getUserById: async (parent, {userId}, context, info) => await prisma.user.findUnique({where:{id: userId}}),
+    getProductsByOwnerId: async (parent, {ownerId}, context, info) => await prisma.product.findMany({where: {owner: {id: {contains: ownerId}}}}),
+    getProductsByOwner: async (parent, {name}, context, info) => await prisma.product.findMany({where: {owner: {name: {contains: name}}}})
   }
 };
 export const typeDefs = gql`
@@ -53,7 +56,9 @@ type Product{
     minAmount: Int
     ownerId: String
     ownerName: String
+    price: Float
     sku: String
+    type: String
     unit: String
     weight: Float
 }
@@ -71,6 +76,22 @@ type User{
     role: String
     username: String
 }
+
+input ProductInput {
+    name: String!
+    category: String!
+    description: String
+    minAmount: Int
+    price: Float!
+    type: String
+    unit: String
+    weight: Float!
+}
+
+type Mutation {
+    createNewProduct(data: ProductInput!): Product
+}
+
 
 type Query {
     getAllPartners: [Partner!]

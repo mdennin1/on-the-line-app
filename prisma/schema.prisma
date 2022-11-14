@@ -18,16 +18,16 @@ enum AddressType {
 }
 
 enum FishType {
-  BASS
   FRESH_WATER
   SALT_WATER
-  TROUT
 }
 
 enum ProductCategory {
   FISH
   MEAL
   SAUCE
+  SHELLFISH
+  SIDE
   SWAG
 }
 
@@ -184,24 +184,25 @@ model PartnerCharity {
 }
 
 model Product {
-  id          String          @id @default(uuid())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime?       @updatedAt
-  name        String
-  available   Boolean         @default(true)
-  category    ProductCategory @default(FISH)
-  description String?
-  minAmount   Int             @default(1)
-  price       Float
-  owner       Partner         @relation(fields: [ownerId, ownerName], references: [id, name])
-  ownerId     String
-  ownerName   String
-  sku         String
-  type        FishType?
-  unit        Unit            @default(OZ)
-  weight      Float
-  CartItem    CartItem[]
-  OrderItem   OrderItem[]
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime?       @updatedAt
+  name          String
+  available     Boolean         @default(true)
+  category      ProductCategory @default(FISH)
+  description   String?
+  flavorProfile String?
+  minAmount     Int             @default(1)
+  price         Float
+  owner         Partner         @relation(fields: [ownerId, ownerName], references: [id, name])
+  ownerId       String
+  ownerName     String
+  sku           String
+  type          FishType?
+  unit          Unit            @default(OZ)
+  weight        Float
+  CartItem      CartItem[]
+  OrderItem     OrderItem[]
 }
 
 model Profile {
